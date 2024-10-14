@@ -1,7 +1,5 @@
 import { useEffect, useState, useRef } from "react";
 import "./timer.css";
-import Clock from "react-clock";
-import "react-clock/dist/Clock.css";
 
 const Timer = () => {
   const [seconds, setSeconds] = useState(0);
@@ -9,11 +7,8 @@ const Timer = () => {
   const [hours, setHours] = useState(0);
   const [isRunning, setIsRunning] = useState(true);
   const timerRef = useRef(null);
-  const [value, setValue] = useState(new Date());
 
   useEffect(() => {
-    const interval = setInterval(() => setValue(new Date()), 1000);
-
     if (isRunning) {
       timerRef.current = setInterval(() => {
         setSeconds((prevSeconds) => {
@@ -33,7 +28,6 @@ const Timer = () => {
     }
     return () => {
       clearInterval(timerRef.current);
-      clearInterval(interval);
     };
   });
 
@@ -54,27 +48,22 @@ const Timer = () => {
 
   return (
     <div className="timer">
-      <div className="container">
-        <div className="timer_container">
-          <h1>Timer</h1>
-          <h1>
-            {hours < 10 ? "0" + hours : hours}:{" "}
-            {minutes < 10 ? "0" + minutes : minutes} :{" "}
-            {seconds < 10 ? "0" + seconds : seconds}
-          </h1>
-          <button className="restart" onClick={restart}>
-            Restart
-          </button>
-          <button className="pause-resume" onClick={togglePauseResume}>
-            {isRunning ? "Pause" : "Resume"}
-          </button>
-          <button className="stop" onClick={stop}>
-            Stop
-          </button>
-          <div className="analog">
-            <Clock value={value} />
-          </div>
-        </div>
+      <div className="timer_container">
+        <h1>Timer</h1>
+        <h1>
+          {hours < 10 ? "0" + hours : hours}:{" "}
+          {minutes < 10 ? "0" + minutes : minutes} :{" "}
+          {seconds < 10 ? "0" + seconds : seconds}
+        </h1>
+        <button className="restart" onClick={restart}>
+          Restart
+        </button>
+        <button className="pause-resume" onClick={togglePauseResume}>
+          {isRunning ? "Pause" : "Resume"}
+        </button>
+        <button className="stop" onClick={stop}>
+          Stop
+        </button>
       </div>
     </div>
   );
