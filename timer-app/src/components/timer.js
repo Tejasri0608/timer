@@ -1,49 +1,41 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useRef } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import {
+  incrementTime,
+  toggleRunning,
+  resetTimer,
+  stopTimer,
+} from "../redux/timerSlice";
 import "./timer.css";
 
 const Timer = () => {
-  const [seconds, setSeconds] = useState(0);
-  const [minutes, setMinutes] = useState(0);
-  const [hours, setHours] = useState(0);
-  const [isRunning, setIsRunning] = useState(true);
+  const { seconds, minutes, hours, isRunning } = useSelector(
+    (state) => state.timer
+  );
+  const dispatch = useDispatch();
   const timerRef = useRef(null);
 
   useEffect(() => {
     if (isRunning) {
       timerRef.current = setInterval(() => {
-        setSeconds((prevSeconds) => {
-          if (prevSeconds === 59) {
-            setMinutes((prevMinutes) => {
-              if (prevMinutes === 59) {
-                setHours((prevHours) => prevHours + 1);
-                return 0;
-              }
-              return prevMinutes + 1;
-            });
-            return 0;
-          }
-          return prevSeconds + 1;
-        });
+        dispatch(incrementTime());
       }, 1000);
     }
     return () => {
       clearInterval(timerRef.current);
     };
-  });
+  }, [isRunning, dispatch]);
 
-  const restart = () => {
-    setSeconds(0);
-    setMinutes(0);
-    setHours(0);
+  const handlePauseResume = () => {
+    dispatch(toggleRunning());
   };
 
-  const stop = () => {
-    clearInterval(timerRef.current);
-    setIsRunning(false);
+  const handleRestart = () => {
+    dispatch(resetTimer());
   };
 
-  const togglePauseResume = () => {
-    setIsRunning((prevIsRunning) => !prevIsRunning);
+  const handleStop = () => {
+    dispatch(stopTimer());
   };
 
   return (
@@ -55,13 +47,13 @@ const Timer = () => {
           {minutes < 10 ? "0" + minutes : minutes} :{" "}
           {seconds < 10 ? "0" + seconds : seconds}
         </h1>
-        <button className="restart" onClick={restart}>
+        <button className="restart" onClick={handleRestart}>
           Restart
         </button>
-        <button className="pause-resume" onClick={togglePauseResume}>
+        <button className="pause-resume" onClick={handlePauseResume}>
           {isRunning ? "Pause" : "Resume"}
         </button>
-        <button className="stop" onClick={stop}>
+        <button className="stop" onClick={handleStop}>
           Stop
         </button>
       </div>

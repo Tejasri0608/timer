@@ -1,7 +1,6 @@
 import Timer from "../components/timer";
 import DigitalClock from "../components/digitalclock";
-import { Route, Routes, useNavigate } from "react-router-dom";
-import Analog from "./analog";
+import { useNavigate } from "react-router-dom";
 
 export default function Digital() {
   const navigate = useNavigate();
@@ -20,10 +19,6 @@ export default function Digital() {
       <button className="analog" onClick={navigateAnalog}>
         Analog
       </button>
-
-      <Routes>
-        <Route path="/analog" element={<Analog />} />
-      </Routes>
     </>
   );
 }
