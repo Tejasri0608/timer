@@ -1,8 +1,8 @@
 import "./App.css";
 import Analog from "./pages/analog";
 import Digital from "./pages/digital";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
 import NoPage from "./pages/nopage";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 function App() {
   return (
